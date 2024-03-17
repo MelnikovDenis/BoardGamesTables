@@ -1,0 +1,40 @@
+.layout {
+      display: flex;
+      flex-direction: row;
+      height: 100vh;
+}
+.leftMenu {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      padding: 10px;
+      background-color: rgb(55, 40, 115);
+}
+.leftMenuChildren {
+      padding: 10px;
+}
+
+.leftMenuTitle {
+      margin: 10px;
+      font-size: 40px;
+      letter-spacing: 10px;
+      color: white;
+}
+.leftMenuButtonDiv {
+      margin: 30px 10px;      
+}
+
+.leftMenuButton {
+      color: white;
+      font-size: 20px;
+      text-align: start;
+      
+      border: 2px solid transparent;
+      cursor: pointer;
+      background: none;
+      
+      padding: 0px;
+}
+.leftMenuButton:hover {      
+      border-bottom: 2px solid white;
+}

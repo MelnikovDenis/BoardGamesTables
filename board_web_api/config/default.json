@@ -1,0 +1,17 @@
+{
+    "cors": {
+        "origin_white_list": [ "http://localhost:3000" ]
+    },
+    "server": {
+        "host": "localhost",
+        "port": 6200 
+    },
+    "db": {
+        "user": "board_user",
+        "password": "board_user_password",
+        "host": "localhost",
+        "database": "board_db",
+        "port": 5432,
+        "max": 5
+    }
+}

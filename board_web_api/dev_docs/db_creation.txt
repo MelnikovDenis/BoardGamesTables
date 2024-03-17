@@ -1,0 +1,41 @@
+CREATE USER board_user WITH PASSWORD 'board_user_password';
+
+CREATE DATABASE board_db
+    WITH
+    OWNER = postgres
+    ENCODING = 'UTF8'
+    LOCALE_PROVIDER = 'libc'
+    CONNECTION LIMIT = -1
+    IS_TEMPLATE = False;
+
+CREATE TABLE members(
+	id SERIAL PRIMARY KEY,
+	name TEXT NOT NULL,
+	email TEXT UNIQUE NOT NULL
+);
+
+CREATE TABLE boards(
+	id SERIAL PRIMARY KEY,
+	name TEXT UNIQUE NOT NULL 
+);
+
+CREATE TABLE boards_members(
+	boardId INTEGER NOT NULL,
+	memberId INTEGER NOT NULL,
+	PRIMARY KEY(boardId, memberId),
+	FOREIGN KEY (boardId)
+		REFERENCES boards (id)
+		ON DELETE CASCADE 
+		ON UPDATE CASCADE,
+	FOREIGN KEY (memberId)
+		REFERENCES members (id)
+		ON DELETE CASCADE 
+		ON UPDATE CASCADE
+);
+
+GRANT ALL PRIVILEGES ON DATABASE "board_db" to board_user;
+GRANT ALL PRIVILEGES ON TABLE "members" to board_user;
+GRANT ALL PRIVILEGES ON TABLE "boards" to board_user;
+GRANT ALL PRIVILEGES ON TABLE "boards_members" to board_user;
+GRANT ALL ON SEQUENCE boards_id_seq TO board_user;
+GRANT ALL ON SEQUENCE members_id_seq TO board_user;

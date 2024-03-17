@@ -1,0 +1,28 @@
+.boardTableCaption {
+      font-size: 40px;
+      margin: 10px;
+      letter-spacing: 10px;
+      font-weight: bold;
+      color: rgb(55, 40, 115);
+}
+.emptyTableText {
+      font-size: 30px;
+      margin: 40px;
+      letter-spacing: 10px;
+      font-weight: bold;
+      color: rgb(55, 40, 115);
+}
+.boardTable {      
+      font-size: 20px;
+      text-align: left;      
+}
+
+.boardTableTh {
+      color: rgb(55, 40, 115);
+      font-size: 25px;
+      font-weight: bolder;
+      padding: 20px;
+}
+.boardTableTd {
+      padding: 20px;
+}
