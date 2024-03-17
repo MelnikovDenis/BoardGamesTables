@@ -5,7 +5,12 @@ import useFetching from '../hooks/useFetching.js';
 
 const MembersPage = () => {
       const [members, setMembers] = useState([]);
-      const [fetchMembers, membersError] = useFetching(async () => {
+      const sortedMembers = useMemo(() => {
+            return [...members].sort((a, b) => a['name'].localeCompare(b['name']));
+      }, [members]);
+
+      const [membersStatusText, setMembersStatusText] = useState(""); 
+      const [fetchMembers, membersError, isMembersLoading] = useFetching(async () => {
             const response = await MemberService.readMembers();
             setMembers(response.data);
       });
@@ -14,17 +19,29 @@ const MembersPage = () => {
             fetchMembers();
       }, []);
 
-      const sortedMembers = useMemo(() => {
-            return [...members].sort((a, b) => a['name'].localeCompare(b['name']));
-      }, [members]);
+      useEffect(() => {
+            if(membersError) {
+                  setMembersStatusText('Ошибка получения данных, попробуйте обновить страницу');
+            }
+            else if(isMembersLoading) {
+                  setMembersStatusText('Загружаем таблицу...');
+            }
+            else {
+                  setMembersStatusText('');
+            }
+      }, [membersError, isMembersLoading]);
 
       return (
             <div className='pageDiv'>
-                  <BoardTable 
-                        headTitles={['id', 'имя', 'email']}
-                        fieldNames={['id', 'name', 'email']} 
-                        rows={sortedMembers} 
-                        caption='Участники'/>
+                  <div className='boardTableCaption'>Участники</div>
+                  {
+                        membersStatusText ?
+                        <div className='boardStatusText'>{membersStatusText}</div> :
+                        <BoardTable 
+                              headTitles={['Имя', 'Email']}
+                              fieldNames={['name', 'email']} 
+                              rows={sortedMembers} />
+                  }
             </div>
       );
 }

@@ -29,7 +29,7 @@ const LeftMenu = ({children}) => {
                               onClick={() => navigate("/boardsMembers/page")}
                               divClassName="leftMenuButtonDiv"
                               buttonClassName="leftMenuButton">
-                              Участники - настольные игры
+                              Участники - игры
                         </BoardButton>
                   </div>
                   <div className="leftMenuChildren">

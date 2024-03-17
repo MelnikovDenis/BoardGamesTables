@@ -5,15 +5,6 @@ import useFetching from '../hooks/useFetching.js';
 
 const BoardsMembersPage = () => {
       const [boardsMembers, setBoardsMembers] = useState([]);
-      const [fetchBoardsMembers, boardsMembersError] = useFetching(async () => {
-            const response = await BoardMemberService.readBoardsMembers();
-            setBoardsMembers(response.data);
-      });
-
-      useEffect(() => {
-            fetchBoardsMembers();
-      }, []);
-
       const sortedBoardsMembers = useMemo(() => {
             return [...boardsMembers].map(
                   a => { 
@@ -22,13 +13,39 @@ const BoardsMembersPage = () => {
                   .sort((a, b) => a['memberName'].localeCompare(b['memberName']));
       }, [boardsMembers]);
 
+      const [boardsMembersStatusText, setboardsMembersStatusText] = useState(""); 
+      const [fetchBoardsMembers, boardsMembersError, isBoardsMembersLoading] = useFetching(async () => {
+            const response = await BoardMemberService.readBoardsMembers();
+            setBoardsMembers(response.data);
+      });
+
+      useEffect(() => {
+            fetchBoardsMembers();
+      }, []);
+
+      useEffect(() => {
+            if(boardsMembersError) {
+                  setboardsMembersStatusText('Ошибка получения данных, попробуйте обновить страницу');
+            }
+            else if(isBoardsMembersLoading) {
+                  setboardsMembersStatusText('Загружаем таблицу...');
+            }
+            else {
+                  setboardsMembersStatusText('');
+            }
+      }, [boardsMembersError, isBoardsMembersLoading]);
+
       return (            
             <div className='pageDiv'>
-                  <BoardTable 
-                        headTitles={['id', 'участник', 'email', 'настольная игра']}
-                        fieldNames={['id', 'memberName', 'memberEmail', 'boardName']} 
-                        rows={sortedBoardsMembers} 
-                        caption='Участники - настольные игры'/>
+                  <div className='boardTableCaption'>Участники - игры</div>
+                  {
+                        boardsMembersStatusText ?
+                        <div className='boardStatusText'>{boardsMembersStatusText}</div> :
+                        <BoardTable 
+                              headTitles={['Участник', 'Email', 'Игра']}
+                              fieldNames={['memberName', 'memberEmail', 'boardName']} 
+                              rows={sortedBoardsMembers} />
+                  }                 
             </div>
       );
 }

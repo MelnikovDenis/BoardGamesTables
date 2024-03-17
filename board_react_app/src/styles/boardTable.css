@@ -5,9 +5,13 @@
       font-weight: bold;
       color: rgb(55, 40, 115);
 }
+.boardStatusText {
+      margin: 10px;
+      font-style: italic;
+}
 .emptyTableText {
       font-size: 30px;
-      margin: 40px;
+      margin: 20px;
       letter-spacing: 10px;
       font-weight: bold;
       color: rgb(55, 40, 115);
@@ -25,4 +29,52 @@
 }
 .boardTableTd {
       padding: 20px;
+}
+
+.boardTableCreateButton {
+      color: rgb(55, 40, 115);
+      font-size: 20px;
+      text-align: start;
+      margin: 10px;
+
+      border: 2px solid transparent;
+      cursor: pointer;
+      background: none;
+      
+      padding: 0px;
+}
+.boardTableCreateButton:hover {
+      border-bottom: 2px solid rgb(55, 40, 115);
+}
+
+.boardTableUpdateButton {
+      color: rgb(55, 40, 115);
+      font-size: 20px;
+      text-align: start;
+      margin: 10px;
+
+      border: 2px solid transparent;
+      cursor: pointer;
+      background: none;
+      
+      padding: 0px;
+}
+.boardTableUpdateButton:hover {
+      border-bottom: 2px solid rgb(55, 40, 115);
+}
+
+.boardTableDeleteButton {
+      color: rgb(55, 40, 115);
+      font-size: 20px;
+      text-align: start;
+      margin: 10px;
+
+      border: 2px solid transparent;
+      cursor: pointer;
+      background: none;
+      
+      padding: 0px;
+}
+.boardTableDeleteButton:hover {
+      border-bottom: 2px solid rgb(55, 40, 115);
 }
