@@ -34,7 +34,7 @@ const BoardTable = ({headTitles, fieldNames, rows, onCreate, onUpdate, onDelete}
                                     }
                                     <td>
                                           <BoardButton 
-                                                onClick={() => onUpdate(row)}
+                                                onClick={() => { onUpdate(row); }}
                                                 divClassName='boardTableUpdateButtonDiv'
                                                 buttonClassName='boardTableUpdateButton'>
                                                 изменить

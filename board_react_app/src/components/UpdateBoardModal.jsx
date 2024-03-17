@@ -1,45 +1,45 @@
 import React, { useState, useEffect } from 'react';
 import useFetching from '../hooks/useFetching.js';
-import BoardService from '../services/BoardService.js';
 import BoardModal from './ui/BoardModal/BoardModal.jsx';
+import BoardService from '../services/BoardService.js';
 import BoardInput from './ui/BoardInput.jsx';
 import BoardButton from './ui/BoardButton';
 
-const CreateBoardModal = ({visibile, setVisible, boards, setBoards}) => {
+const UpdateBoardModal = ({visible, setVisible, oldValue, boards, setBoards}) => {
       const [name, setName] = useState('');
 
-      const [createBoardStatusText, setCreateBoardStatusText] = useState(""); 
-      const [fetchCreateBoard, createBoardError, isCreateBoardLoading] = useFetching(async () => {
-            const response = await BoardService.createBoard(name);
-            setBoards([...boards, response.data]);
+      const [updateBoardStatusText, setUpdateBoardStatusText] = useState(""); 
+      const [fetchUpdateBoard, updateBoardError, isUpdateBoardLoading] = useFetching(async () => {
+            const response = await BoardService.updateBoard(oldValue.id, name);
+            setBoards([...boards.filter(b => b.id !== oldValue.id), response.data]);
             setName('');
-            setCreateBoardStatusText('');
+            setUpdateBoardStatusText('');
             setVisible(false);
       });
 
       useEffect(() => {
-            if(createBoardError) {
-                  setCreateBoardStatusText('Произошла ошибка, попробуйте позднее');
+            if(updateBoardError) {
+                  setUpdateBoardStatusText('Произошла ошибка, попробуйте позднее');
             }
-            else if(isCreateBoardLoading) {
-                  setCreateBoardStatusText('Отправляем запрос...');
+            else if(isUpdateBoardLoading) {
+                  setUpdateBoardStatusText('Отправляем запрос...');
             }
             else {
-                  setCreateBoardStatusText('');
+                  setUpdateBoardStatusText('');
             }
-      }, [createBoardError, isCreateBoardLoading]);
+      }, [updateBoardError, isUpdateBoardLoading]);
 
       return (
             <BoardModal 
-                  visible={visibile} 
+                  visible={visible} 
                   setVisible={(value) => { 
                         if(!value) {
-                              setCreateBoardStatusText('');
+                              setUpdateBoardStatusText('');
                               setName(''); 
                         }
                         setVisible(value);
                   }}>
-                  <div className='modalStatusText'>{createBoardStatusText}</div>
+                  <div className='modalStatusText'>{updateBoardStatusText}</div>
                   <BoardInput 
                         divClassName='modalInputDiv'
                         inputClassName='modalInput'                        
@@ -49,11 +49,11 @@ const CreateBoardModal = ({visibile, setVisible, boards, setBoards}) => {
                   <BoardButton 
                         divClassName='modalButtonDiv' 
                         buttonClassName='modalButton'
-                        onClick={fetchCreateBoard}>
-                        Создать
+                        onClick={fetchUpdateBoard}>
+                        Обновить
                   </BoardButton>
             </BoardModal>
       );
 }
 
-export default CreateBoardModal;
+export default UpdateBoardModal;

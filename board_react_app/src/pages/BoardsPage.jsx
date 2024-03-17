@@ -3,6 +3,7 @@ import BoardService from '../services/BoardService.js';
 import BoardTable from '../components/BoardTable.jsx';
 import useFetching from '../hooks/useFetching.js';
 import CreateBoardModal from '../components/CreateBoardModal.jsx';
+import UpdateBoardModal from '../components/UpdateBoardModal.jsx';
 
 const BoardsPage = () => {
       const [boards, setBoards] = useState([]);
@@ -33,6 +34,13 @@ const BoardsPage = () => {
       }, [boardsError, isBoardsLoading]);
 
       const [createBoardModalVisible, setCreateBoardModalVisible] = useState(false);
+      const [updateBoardModalVisible, setUpdateBoardModalVisible] = useState(false);
+      const [updateOldValue, setUpdateOldValue] = useState(null);
+
+      const [fetchDeleteBoards, deleteBoardsError, isDeleteBoardsLoading] = useFetching(async (deleteId) => {
+            const response = await BoardService.deleteBoard(deleteId);
+            setBoards(boards.filter(b => b.id !== response.data.id));
+      });
 
       return (
             <div className='pageDiv'>
@@ -41,12 +49,20 @@ const BoardsPage = () => {
                         setVisible={setCreateBoardModalVisible}
                         boards={boards}
                         setBoards={setBoards}/>
+                  <UpdateBoardModal 
+                        visible={updateBoardModalVisible} 
+                        setVisible={setUpdateBoardModalVisible}
+                        boards={boards}
+                        oldValue={updateOldValue}
+                        setBoards={setBoards}/>
                   <div className='boardTableCaption'>Настольные игры</div>
                   {
                         boardsStatusText ?
                         <div className='boardStatusText'>{boardsStatusText}</div> :
                         <BoardTable
                               onCreate={() => setCreateBoardModalVisible(true)}
+                              onUpdate={oldValue => { setUpdateBoardModalVisible(true); setUpdateOldValue(oldValue); }}
+                              onDelete={value => { fetchDeleteBoards(value.id); }}
                               headTitles={['Название']}
                               fieldNames={['name']}  
                               rows={sortedBoards} />
