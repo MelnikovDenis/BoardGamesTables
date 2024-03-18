@@ -3,7 +3,6 @@ import LeftMenu from "./layouts/LeftMenu.jsx";
 import MembersPage from "./pages/MembersPage.jsx";
 import BoardsPage from "./pages/BoardsPage.jsx";
 import BoardsMembersPage from "./pages/BoardsMembersPage.jsx";
-
 function App() {
   return (
     <div className="App">

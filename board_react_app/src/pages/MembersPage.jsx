@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import MemberService from '../services/MemberService.js';
 import BoardTable from '../components/BoardTable.jsx';
 import useFetching from '../hooks/useFetching.js';
+import CreateMemberModal from '../components/CreateMemberModal.jsx';
 
 const MembersPage = () => {
       const [members, setMembers] = useState([]);
@@ -19,6 +20,8 @@ const MembersPage = () => {
             fetchMembers();
       }, []);
 
+      const [createMemberModalVisible, setCreateMemberModalVisible] = useState(false);
+
       useEffect(() => {
             if(membersError) {
                   setMembersStatusText('Ошибка получения данных, попробуйте обновить страницу');
@@ -33,6 +36,11 @@ const MembersPage = () => {
 
       return (
             <div className='pageDiv'>
+                  <CreateMemberModal 
+                        visibile={createMemberModalVisible} 
+                        setVisible={setCreateMemberModalVisible}
+                        members={members}
+                        setMembers={setMembers}/>
                   <div className='boardTableCaption'>Участники</div>
                   {
                         membersStatusText ?
@@ -40,7 +48,8 @@ const MembersPage = () => {
                         <BoardTable 
                               headTitles={['Имя', 'Email']}
                               fieldNames={['name', 'email']} 
-                              rows={sortedMembers} />
+                              rows={sortedMembers}
+                              onCreate={() => setCreateMemberModalVisible(true)} />
                   }
             </div>
       );
