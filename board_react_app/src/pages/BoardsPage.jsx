@@ -21,6 +21,15 @@ const BoardsPage = () => {
             fetchBoards();
       }, []);
 
+      const [createBoardModalVisible, setCreateBoardModalVisible] = useState(false);
+      const [updateBoardModalVisible, setUpdateBoardModalVisible] = useState(false);
+      const [updateOldValue, setUpdateOldValue] = useState(null);
+
+      const [fetchDeleteBoard, deleteBoardError, isDeleteBoardLoading] = useFetching(async (deleteId) => {
+            const response = await BoardService.deleteBoard(deleteId);
+            setBoards(boards.filter(b => b.id !== response.data.id));
+      });
+
       useEffect(() => {
             if(boardsError) {
                   setBoardsStatusText('Ошибка получения данных, попробуйте обновить страницу');
@@ -28,19 +37,16 @@ const BoardsPage = () => {
             else if(isBoardsLoading) {
                   setBoardsStatusText('Загружаем таблицу...');
             }
+            else if(isDeleteBoardLoading) {
+                  setBoardsStatusText('Удаляем запись...');
+            }
+            else if(deleteBoardError) {
+                  setBoardsStatusText('Ошибка удаления, попробуйте обновить страницу и попробуйте снова');
+            }
             else {
                   setBoardsStatusText('');
             }
-      }, [boardsError, isBoardsLoading]);
-
-      const [createBoardModalVisible, setCreateBoardModalVisible] = useState(false);
-      const [updateBoardModalVisible, setUpdateBoardModalVisible] = useState(false);
-      const [updateOldValue, setUpdateOldValue] = useState(null);
-
-      const [fetchDeleteBoards, deleteBoardsError, isDeleteBoardsLoading] = useFetching(async (deleteId) => {
-            const response = await BoardService.deleteBoard(deleteId);
-            setBoards(boards.filter(b => b.id !== response.data.id));
-      });
+      }, [boardsError, isBoardsLoading, deleteBoardError, isDeleteBoardLoading]);
 
       return (
             <div className='pageDiv'>
@@ -54,7 +60,8 @@ const BoardsPage = () => {
                         setVisible={setUpdateBoardModalVisible}
                         boards={boards}
                         oldValue={updateOldValue}
-                        setBoards={setBoards}/>
+                        setBoards={setBoards}
+                        setOldValue={setUpdateOldValue}/>
                   <div className='boardTableCaption'>Настольные игры</div>
                   {
                         boardsStatusText ?
@@ -62,7 +69,7 @@ const BoardsPage = () => {
                         <BoardTable
                               onCreate={() => setCreateBoardModalVisible(true)}
                               onUpdate={oldValue => { setUpdateBoardModalVisible(true); setUpdateOldValue(oldValue); }}
-                              onDelete={value => { fetchDeleteBoards(value.id); }}
+                              onDelete={value => { fetchDeleteBoard(value.id); }}
                               headTitles={['Название']}
                               fieldNames={['name']}  
                               rows={sortedBoards} />

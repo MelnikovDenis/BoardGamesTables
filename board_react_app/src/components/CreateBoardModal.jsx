@@ -8,7 +8,7 @@ import BoardButton from './ui/BoardButton';
 const CreateBoardModal = ({visible, setVisible, boards, setBoards}) => {
       const [name, setName] = useState('');
 
-      const [createBoardStatusText, setCreateBoardStatusText] = useState(""); 
+      const [createBoardStatusText, setCreateBoardStatusText] = useState("");
       const [fetchCreateBoard, createBoardError, isCreateBoardLoading] = useFetching(async () => {
             const response = await BoardService.createBoard(name);
             setBoards([...boards, response.data]);

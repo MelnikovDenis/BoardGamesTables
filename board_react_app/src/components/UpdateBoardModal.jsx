@@ -5,7 +5,7 @@ import BoardService from '../services/BoardService.js';
 import BoardInput from './ui/BoardInput.jsx';
 import BoardButton from './ui/BoardButton';
 
-const UpdateBoardModal = ({visible, setVisible, oldValue, boards, setBoards}) => {
+const UpdateBoardModal = ({visible, setVisible, oldValue, setOldValue, boards, setBoards}) => {
       const [name, setName] = useState('');
 
       const [updateBoardStatusText, setUpdateBoardStatusText] = useState(""); 
@@ -14,6 +14,7 @@ const UpdateBoardModal = ({visible, setVisible, oldValue, boards, setBoards}) =>
             setBoards([...boards.filter(b => b.id !== oldValue.id), response.data]);
             setName('');
             setUpdateBoardStatusText('');
+            setOldValue(null);
             setVisible(false);
       });
 
@@ -39,6 +40,7 @@ const UpdateBoardModal = ({visible, setVisible, oldValue, boards, setBoards}) =>
                   setVisible={(value) => { 
                         if(!value) {
                               setUpdateBoardStatusText('');
+                              setOldValue(null);
                               setName(''); 
                         }
                         setVisible(value);

@@ -19,11 +19,17 @@ const MembersPage = () => {
 
       useEffect(() => {
             fetchMembers();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       }, []);
 
       const [createMemberModalVisible, setCreateMemberModalVisible] = useState(false);
       const [updateMemberModalVisible, setUpdateMemberModalVisible] = useState(false);
       const [updateOldValue, setUpdateOldValue] = useState(null);
+
+      const [fetchDeleteMember, deleteMemberError, isDeleteMemberLoading] = useFetching(async (deleteId) => {
+            const response = await MemberService.deleteMember(deleteId);
+            setMembers(members.filter(b => b.id !== response.data.id));
+      });
 
       useEffect(() => {
             if(membersError) {
@@ -32,10 +38,16 @@ const MembersPage = () => {
             else if(isMembersLoading) {
                   setMembersStatusText('Загружаем таблицу...');
             }
+            else if(isDeleteMemberLoading) {
+                  setMembersStatusText('Удаляем запись...');
+            }
+            else if(deleteMemberError) {
+                  setMembersStatusText('Ошибка удаления, попробуйте обновить страницу');
+            }
             else {
                   setMembersStatusText('');
             }
-      }, [membersError, isMembersLoading]);
+      }, [membersError, isMembersLoading, deleteMemberError, isDeleteMemberLoading]);
 
       return (
             <div className='pageDiv'>
@@ -49,7 +61,8 @@ const MembersPage = () => {
                         setVisible={setUpdateMemberModalVisible}
                         members={members}
                         setMembers={setMembers}
-                        oldValue={updateOldValue}/>
+                        oldValue={updateOldValue}
+                        setOldValue={setUpdateOldValue}/>
                   <div className='boardTableCaption'>Участники</div>
                   {
                         membersStatusText ?
@@ -59,7 +72,8 @@ const MembersPage = () => {
                               fieldNames={['name', 'email']} 
                               rows={sortedMembers}
                               onCreate={() => setCreateMemberModalVisible(true)}
-                              onUpdate={(oldValue) => {setUpdateMemberModalVisible(true); setUpdateOldValue(oldValue);}} />
+                              onUpdate={(oldValue) => {setUpdateMemberModalVisible(true); setUpdateOldValue(oldValue);}}
+                              onDelete={(value) => fetchDeleteMember(value.id)} />
                   }
             </div>
       );

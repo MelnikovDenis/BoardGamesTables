@@ -5,7 +5,7 @@ import MemberService from '../services/MemberService.js';
 import BoardInput from './ui/BoardInput.jsx';
 import BoardButton from './ui/BoardButton';
 
-const UpdateMemberModal = ({visible, setVisible, oldValue, members, setMembers}) => {
+const UpdateMemberModal = ({visible, setVisible, oldValue, setOldValue, members, setMembers}) => {
       const [name, setName] = useState('');
       const [email, setEmail] = useState('');
       const [updateMemberStatusText, setUpdateMemberStatusText] = useState(''); 
@@ -16,6 +16,7 @@ const UpdateMemberModal = ({visible, setVisible, oldValue, members, setMembers})
             setName('');
             setEmail('');
             setUpdateMemberStatusText('');
+            setOldValue(null);
             setVisible(false);
       });
 
@@ -42,6 +43,7 @@ const UpdateMemberModal = ({visible, setVisible, oldValue, members, setMembers})
                   setVisible={(value) => { 
                         if(!value) {
                               setUpdateMemberStatusText('');
+                              setOldValue(null);
                               setName(''); 
                               setEmail(''); 
                         }
