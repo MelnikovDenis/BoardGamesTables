@@ -45,7 +45,7 @@ const BoardsPage = () => {
       return (
             <div className='pageDiv'>
                   <CreateBoardModal 
-                        visibile={createBoardModalVisible} 
+                        visible={createBoardModalVisible} 
                         setVisible={setCreateBoardModalVisible}
                         boards={boards}
                         setBoards={setBoards}/>

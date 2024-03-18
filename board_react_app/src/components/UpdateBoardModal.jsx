@@ -18,6 +18,10 @@ const UpdateBoardModal = ({visible, setVisible, oldValue, boards, setBoards}) =>
       });
 
       useEffect(() => {
+            setName(oldValue ? oldValue.name : '');
+      }, [oldValue]);
+
+      useEffect(() => {
             if(updateBoardError) {
                   setUpdateBoardStatusText('Произошла ошибка, попробуйте позднее');
             }

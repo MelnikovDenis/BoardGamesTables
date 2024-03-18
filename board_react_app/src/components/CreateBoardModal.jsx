@@ -5,7 +5,7 @@ import BoardModal from './ui/BoardModal/BoardModal.jsx';
 import BoardInput from './ui/BoardInput.jsx';
 import BoardButton from './ui/BoardButton';
 
-const CreateBoardModal = ({visibile, setVisible, boards, setBoards}) => {
+const CreateBoardModal = ({visible, setVisible, boards, setBoards}) => {
       const [name, setName] = useState('');
 
       const [createBoardStatusText, setCreateBoardStatusText] = useState(""); 
@@ -31,7 +31,7 @@ const CreateBoardModal = ({visibile, setVisible, boards, setBoards}) => {
 
       return (
             <BoardModal 
-                  visible={visibile} 
+                  visible={visible} 
                   setVisible={(value) => { 
                         if(!value) {
                               setCreateBoardStatusText('');

@@ -3,6 +3,7 @@ import MemberService from '../services/MemberService.js';
 import BoardTable from '../components/BoardTable.jsx';
 import useFetching from '../hooks/useFetching.js';
 import CreateMemberModal from '../components/CreateMemberModal.jsx';
+import UpdateMemberModal from '../components/UpdateMemberModal.jsx';
 
 const MembersPage = () => {
       const [members, setMembers] = useState([]);
@@ -21,6 +22,8 @@ const MembersPage = () => {
       }, []);
 
       const [createMemberModalVisible, setCreateMemberModalVisible] = useState(false);
+      const [updateMemberModalVisible, setUpdateMemberModalVisible] = useState(false);
+      const [updateOldValue, setUpdateOldValue] = useState(null);
 
       useEffect(() => {
             if(membersError) {
@@ -37,10 +40,16 @@ const MembersPage = () => {
       return (
             <div className='pageDiv'>
                   <CreateMemberModal 
-                        visibile={createMemberModalVisible} 
+                        visible={createMemberModalVisible} 
                         setVisible={setCreateMemberModalVisible}
                         members={members}
                         setMembers={setMembers}/>
+                  <UpdateMemberModal 
+                        visible={updateMemberModalVisible} 
+                        setVisible={setUpdateMemberModalVisible}
+                        members={members}
+                        setMembers={setMembers}
+                        oldValue={updateOldValue}/>
                   <div className='boardTableCaption'>Участники</div>
                   {
                         membersStatusText ?
@@ -49,7 +58,8 @@ const MembersPage = () => {
                               headTitles={['Имя', 'Email']}
                               fieldNames={['name', 'email']} 
                               rows={sortedMembers}
-                              onCreate={() => setCreateMemberModalVisible(true)} />
+                              onCreate={() => setCreateMemberModalVisible(true)}
+                              onUpdate={(oldValue) => {setUpdateMemberModalVisible(true); setUpdateOldValue(oldValue);}} />
                   }
             </div>
       );
