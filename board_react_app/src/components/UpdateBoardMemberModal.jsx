@@ -21,8 +21,8 @@ const UpdateBoardMemberModal = ({visible, setVisible, members, boards, boardsMem
                   setBoardsMembers(
                         [...boardsMembers.filter(bm => bm.boardId !== oldValue.boardId || bm.memberId !== oldValue.memberId), 
                               {
-                                    boardId: response.boardId, 
-                                    memberId: response.memberId, 
+                                    boardId: response.data.boardId, 
+                                    memberId: response.data.memberId, 
                                     boardName: boards.find(board => board.id === selectedBoardId).name,
                                     memberName: members.find(member => member.id === selectedMemberId).name,
                                     memberEmail: members.find(member => member.id === selectedMemberId).email

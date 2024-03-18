@@ -11,10 +11,10 @@ const CreateBoardMemberModal = ({visible, setVisible, members, boards, boardsMem
 
       const [createBoardMemberStatusText, setCreateBoardMemberStatusText] = useState("");
       const [fetchCreateBoardMember, createBoardMemberError, isCreateBoardMemberLoading] = useFetching(async () => {
-            const response = await BoardMemberService.createBoardMember(setSelectedBoardId, selectedMemberId);
+            const response = await BoardMemberService.createBoardMember(selectedBoardId, selectedMemberId);
             setBoardsMembers([...boardsMembers, {
-                  boardId: response.boardId, 
-                  memberId: response.memberId, 
+                  boardId: response.data.boardId, 
+                  memberId: response.data.memberId, 
                   boardName: boards.find(board => board.id === selectedBoardId).name,
                   memberName: members.find(member => member.id === selectedMemberId).name,
                   memberEmail: members.find(member => member.id === selectedMemberId).email}]);

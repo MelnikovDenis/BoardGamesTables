@@ -36,6 +36,17 @@ const BoardsMembersPage = () => {
       // eslint-disable-next-line react-hooks/exhaustive-deps
       }, []);
 
+
+      const [createBoardMemberModalVisible, setCreateBoardMemberModalVisible] = useState(false);
+      const [updateBoardMemberModalVisible, setUpdateBoardMemberModalVisible] = useState(false);
+      const [updateOldValue, setUpdateOldValue] = useState(null);
+      const [fetchDeleteBoardMember, deleteBoardMemberError, isDeleteBoardMemberLoading] = useFetching(
+            async (deleteBoardId, deleteMemberId) => {
+                  await BoardMemberService.deleteBoardMember(deleteBoardId, deleteMemberId);
+                  setBoardsMembers(boardsMembers.filter(bm => bm.boardId !== deleteBoardId || bm.memberId !== deleteMemberId));
+            }
+      );
+
       useEffect(() => {
             if(boardsMembersError) {
                   setboardsMembersStatusText('Ошибка получения данных, попробуйте обновить страницу');
@@ -43,14 +54,16 @@ const BoardsMembersPage = () => {
             else if(isBoardsMembersLoading) {
                   setboardsMembersStatusText('Загружаем таблицу...');
             }
+            else if(isDeleteBoardMemberLoading) {
+                  setboardsMembersStatusText('Удаляем запись...');
+            }
+            else if(deleteBoardMemberError) {
+                  setboardsMembersStatusText('Ошибка удаления, попробуйте обновить страницу и попробуйте снова');
+            }
             else {
                   setboardsMembersStatusText('');
             }
-      }, [boardsMembersError, isBoardsMembersLoading]);
-
-      const [createBoardMemberModalVisible, setCreateBoardMemberModalVisible] = useState(false);
-      const [updateBoardMemberModalVisible, setUpdateBoardMemberModalVisible] = useState(false);
-      const [updateOldValue, setUpdateOldValue] = useState(null);
+      }, [boardsMembersError, isBoardsMembersLoading, deleteBoardMemberError, isDeleteBoardMemberLoading]);
 
       return (            
             <div className='pageDiv'>
@@ -79,7 +92,8 @@ const BoardsMembersPage = () => {
                               fieldNames={['memberName', 'memberEmail', 'boardName']} 
                               rows={sortedBoardsMembers} 
                               onCreate={() => setCreateBoardMemberModalVisible(true)}
-                              onUpdate={(oldValue) => { setUpdateBoardMemberModalVisible(true); setUpdateOldValue(oldValue)}}/>
+                              onUpdate={(oldValue) => { setUpdateBoardMemberModalVisible(true); setUpdateOldValue(oldValue)}}
+                              onDelete={(value) => fetchDeleteBoardMember(value.boardId, value.memberId)}/>
                   }                 
             </div>
       );
