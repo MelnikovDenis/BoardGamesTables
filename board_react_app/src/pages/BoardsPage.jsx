@@ -19,6 +19,7 @@ const BoardsPage = () => {
 
       useEffect(() => {
             fetchBoards();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       }, []);
 
       const [createBoardModalVisible, setCreateBoardModalVisible] = useState(false);
@@ -41,7 +42,7 @@ const BoardsPage = () => {
                   setBoardsStatusText('Удаляем запись...');
             }
             else if(deleteBoardError) {
-                  setBoardsStatusText('Ошибка удаления, попробуйте обновить страницу и попробуйте снова');
+                  setBoardsStatusText('Ошибка удаления, обновите страницу и попробуйте снова');
             }
             else {
                   setBoardsStatusText('');

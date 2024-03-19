@@ -42,7 +42,7 @@ const MembersPage = () => {
                   setMembersStatusText('Удаляем запись...');
             }
             else if(deleteMemberError) {
-                  setMembersStatusText('Ошибка удаления, попробуйте обновить страницу');
+                  setMembersStatusText('Ошибка удаления, обновите страницу и попробуйте снова');
             }
             else {
                   setMembersStatusText('');

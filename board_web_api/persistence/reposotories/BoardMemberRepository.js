@@ -35,17 +35,17 @@ export default class BoardMemberRepository {
             try {
                   await client.query('BEGIN');
 
-                  const insertParamQuery = {
-                        text: 'INSERT INTO boards_members(boardId, memberId) VALUES($1, $2) RETURNING *',
-                        values: [newBoardId, newMemberId]
-                  };
-                  const insertResult = await client.query(insertParamQuery);
-
                   const deleteParamQuery = {
                         text: 'DELETE FROM boards_members WHERE boardId = $1 AND memberId = $2 RETURNING *',
                         values: [oldBoardId, oldMemberId]
                   };
                   await client.query(deleteParamQuery);
+
+                  const insertParamQuery = {
+                        text: 'INSERT INTO boards_members(boardId, memberId) VALUES($1, $2) RETURNING *',
+                        values: [newBoardId, newMemberId]
+                  };
+                  const insertResult = await client.query(insertParamQuery);
 
                   await client.query('COMMIT');
 

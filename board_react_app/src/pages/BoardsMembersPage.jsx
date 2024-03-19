@@ -58,7 +58,7 @@ const BoardsMembersPage = () => {
                   setboardsMembersStatusText('Удаляем запись...');
             }
             else if(deleteBoardMemberError) {
-                  setboardsMembersStatusText('Ошибка удаления, попробуйте обновить страницу и попробуйте снова');
+                  setboardsMembersStatusText('Ошибка удаления, обновите страницу и попробуйте снова');
             }
             else {
                   setboardsMembersStatusText('');
